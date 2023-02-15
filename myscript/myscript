@@ -1,0 +1,51 @@
+#!/bin/python3
+
+import sys
+import os
+
+from my_color import *
+from my_actions import *
+
+this_dir = os.path.dirname(os.path.realpath(__file__)) + "/.."
+
+def usage():
+    msg = "USAGE\n"
+    msg += "\tmyscript [args?] [path?]\n\n"
+    msg += "DESCRIPTION\n"
+    msg += "\tEasy way to create root program with command and add modules.\n\n"
+    msg += "\t[args] [-l]\t List all programms already rooted.\n"
+    msg += "\t       [-r]\t Removes a program.\n\n"
+    msg += f"by {my_color.light_red}paulogarithm{my_color.default}."
+    print(msg)
+        
+def error_cases():
+    if (len(sys.argv) == 2 and sys.argv[1] == "-h"):
+        usage()
+        exit(0)
+    
+    if (len(sys.argv) == 2 and sys.argv[1] == "-l"):
+        print("You don't have any commands yet.") if len(os.listdir(f"{this_dir}/links")) == 0 else True
+        [print(f"{my_color.green}>{my_color.default} {x}") for x in os.listdir(f"{this_dir}/links")]
+        exit(0)
+    
+    if (len(sys.argv) == 3 and sys.argv[1] == "-r"):
+        remove(sys.argv[2])
+        exit(0)
+
+    if (len(sys.argv) != 2):
+        exit(69)
+
+if __name__ == "__main__":
+
+    error_cases()
+    select = sys.argv[1]
+
+    if os.path.isfile(select):
+        its_a_file(select)
+    elif os.path.isdir(select):
+        its_a_folder(select)
+    else:
+        print(f"{my_color.red}The item is neither a file nor a folder.{my_color.default}")
+        exit(69)
+
+    exit(0)
